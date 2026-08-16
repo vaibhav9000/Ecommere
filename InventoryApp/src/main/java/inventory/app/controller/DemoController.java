@@ -4,11 +4,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/demo")
+@RequestMapping("")
 public class DemoController {
 
-    @RequestMapping("/hello")
-    public String hello() {
-        return "Hello, World!";
+    @RequestMapping("/public/api/hello")
+    public String helloPublic() {
+        return "Hello, Public!";
+    }
+
+    @RequestMapping("/private/api/hello")
+    public String helloPrivate() {
+        return "Hello, Private!";
     }
 }
