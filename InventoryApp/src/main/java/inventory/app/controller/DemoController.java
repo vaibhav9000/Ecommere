@@ -12,8 +12,13 @@ public class DemoController {
         return "Hello, Public!";
     }
 
-    @RequestMapping("/private/api/hello")
-    public String helloPrivate() {
-        return "Hello, Private!";
+    @RequestMapping("/user/api/hello")
+    public String helloUser() {
+        return "Hello, User!";
+    }
+
+    @RequestMapping("/service/api/hello")
+    public String helloServiceUser() {
+        return "Hello, Service User!";
     }
 }
