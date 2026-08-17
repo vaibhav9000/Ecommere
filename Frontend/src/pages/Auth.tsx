@@ -2,82 +2,99 @@ import { useState } from "react";
 import { supabase } from "../lib/supabase";
 
 export default function Auth() {
-  const [isSignup, setIsSignup] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
+    const [isSignup, setIsSignup] = useState(false);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+    const [message, setMessage] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
 
-    setError("");
-    setMessage("");
+        setError("");
+        setMessage("");
 
-    if (isSignup) {
-      const { error } = await supabase.auth.signUp({
-        email,
-        password,
-      });
+        if (isSignup) {
+            const { error } = await supabase.auth.signUp({
+                email,
+                password,
+            });
 
-      if (error) {
-        setError(error.message);
-        return;
-      }
+            if (error) {
+                setError(error.message);
+                return;
+            }
 
-      setMessage(
-        "Signup successful. Please check your email to verify your account."
-      );
-    } else {
-      const { error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+            setMessage(
+                "Signup successful. Please check your email to verify your account."
+            );
+        } else {
+            const { error } = await supabase.auth.signInWithPassword({
+                email,
+                password,
+            });
 
-      if (error) {
-        setError(error.message);
-        return;
-      }
+            if (error) {
+                setError(error.message);
+                return;
+            }
 
-      // Supabase creates the session.
-      // ProtectedRoute will redirect to /home.
-    }
-  };
+            // Supabase creates the session.
+            // ProtectedRoute will redirect to /home.
+        }
+    };
 
-  return (
-    <div>
-      <h1>{isSignup ? "Create Account" : "Login"}</h1>
+    const handleGoogleLogin = async () => {
+        const { error } = await supabase.auth.signInWithOAuth({
+            provider: "google",
+            options: {
+                redirectTo: `${window.location.origin}/home`,
+            },
+        });
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+        if (error) {
+            setError(error.message);
+        }
+    };
 
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+    return (
+        <div>
+            <h1>{isSignup ? "Create Account" : "Login"}</h1>
 
-        <button type="submit">
-          {isSignup ? "Sign Up" : "Login"}
-        </button>
-      </form>
+            <form onSubmit={handleSubmit}>
+                <input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
 
-      {error && <p>{error}</p>}
-      {message && <p>{message}</p>}
+                <input
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                />
 
-      <button onClick={() => setIsSignup(!isSignup)}>
-        {isSignup
-          ? "Already have an account? Login"
-          : "Don't have an account? Sign Up"}
-      </button>
-    </div>
-  );
+                <button type="submit">
+                    {isSignup ? "Sign Up" : "Login"}
+                </button>
+            </form>
+
+            {error && <p>{error}</p>}
+            {message && <p>{message}</p>}
+
+            <button onClick={() => setIsSignup(!isSignup)}>
+                {isSignup
+                    ? "Already have an account? Login"
+                    : "Don't have an account? Sign Up"}
+            </button>
+
+            <button type="button" onClick={handleGoogleLogin}>
+                Continue with Google
+            </button>
+        </div>
+    );
 }
