@@ -1,0 +1,55 @@
+package inventory.app.model;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.Instant;
+
+enum ProductCategories {
+    ELECTRONICS,
+    CLOTHING,
+    FOOD,
+    FURNITURE,
+    TOYS
+}
+
+@Entity
+@Table(name = "products")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
+
+    @Column(nullable = false)
+    private String name;
+
+    private String description;
+
+    @Column(nullable = false)
+    private ProductCategories category;
+
+    private String imageUrl;
+
+    @Column(nullable = false)
+    private String sku = "SKU-" + java.util.UUID.randomUUID().toString();
+
+    @Column(nullable = false)
+    private double price;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private Instant createdAt;
+
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private Instant updatedAt;
+}
