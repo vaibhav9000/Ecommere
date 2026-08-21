@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.UUID;
 
 enum ProductCategories {
     ELECTRONICS,
@@ -27,7 +28,7 @@ enum ProductCategories {
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private UUID id;
 
     @Column(nullable = false)
     private String name;

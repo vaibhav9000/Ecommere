@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -17,7 +18,7 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product getProduct(String id) {
+    public Product getProduct(UUID id) {
         return productRepository.findById(id).orElse(null);
     }
 
@@ -30,7 +31,7 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public Product updateProduct(String id, Product product) {
+    public Product updateProduct(UUID id, Product product) {
         if (!productRepository.existsById(id)) {
             return null;
         }
@@ -38,7 +39,7 @@ public class ProductService {
         return productRepository.save(product);
     }
 
-    public boolean deleteProduct(String id) {
+    public boolean deleteProduct(UUID id) {
         if (!productRepository.existsById(id)) {
             return false;
         }

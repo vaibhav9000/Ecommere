@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/products")
@@ -20,7 +21,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public Product getProduct(@PathVariable String id) {
+    public Product getProduct(@PathVariable UUID id) {
         return productService.getProduct(id);
     }
 
@@ -30,12 +31,12 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public Product updateProduct(@PathVariable String id, @RequestBody Product product) {
+    public Product updateProduct(@PathVariable UUID id, @RequestBody Product product) {
         return productService.updateProduct(id, product);
     }
 
     @DeleteMapping("/{id}")
-    public boolean deleteProduct(@PathVariable String id) {
+    public boolean deleteProduct(@PathVariable UUID id) {
         return productService.deleteProduct(id);
     }
 

@@ -29,7 +29,7 @@ public class Warehouse {
     private String name;
 
     @Column(nullable = false, unique = true)
-    private Integer code;
+    private String code;
 
     private String address;
 
