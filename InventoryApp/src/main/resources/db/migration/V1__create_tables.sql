@@ -1,0 +1,41 @@
+--CREATE TABLE warehouses (
+--    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+--    name VARCHAR(255) NOT NULL,
+--    code VARCHAR(255) NOT NULL UNIQUE,
+--    address VARCHAR(255),
+--    status VARCHAR(50) NOT NULL,
+--    latitude NUMERIC(10, 7),
+--    longitude NUMERIC(10, 7)
+--);
+--
+--CREATE TABLE products (
+--    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+--    name VARCHAR(255) NOT NULL,
+--    description TEXT,
+--    category VARCHAR(50) NOT NULL,
+--    image_url VARCHAR(255),
+--    sku VARCHAR(255) NOT NULL UNIQUE,
+--    price DOUBLE PRECISION NOT NULL,
+--    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
+--    updated_at TIMESTAMP WITH TIME ZONE NOT NULL
+--);
+--
+--CREATE TABLE inventory (
+--    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+--    warehouse_id UUID NOT NULL,
+--    product_id UUID NOT NULL,
+--    quantity INTEGER NOT NULL DEFAULT 0,
+--    reserved_quantity INTEGER NOT NULL DEFAULT 0,
+--    updated_at TIMESTAMP WITH TIME ZONE NOT NULL,
+--
+--    CONSTRAINT fk_inventory_warehouse
+--        FOREIGN KEY (warehouse_id)
+--        REFERENCES warehouses(id),
+--
+--    CONSTRAINT fk_inventory_product
+--        FOREIGN KEY (product_id)
+--        REFERENCES products(id),
+--
+--    CONSTRAINT uk_inventory_warehouse_product
+--        UNIQUE (warehouse_id, product_id)
+--);
