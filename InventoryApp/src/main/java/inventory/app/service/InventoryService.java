@@ -19,12 +19,16 @@ public class InventoryService {
     private final WarehouseService warehouseService;
     private final ProductService productService;
 
-    public List<Inventory> getAllInventory() {
-        return inventoryRepository.findAll();
+    public List<Inventory> getAllInventory(List<UUID> warehouseIds) {
+        if (warehouseIds == null || warehouseIds.isEmpty()) {
+            return inventoryRepository.findAllWithProductAndWarehouse();
+        }
+        List<Inventory> inventoryList = inventoryRepository.findAllByWarehouseIds(warehouseIds);
+        return inventoryList;
     }
 
     public Inventory getInventory(UUID id) {
-        return inventoryRepository.findById(id).orElse(null);
+        return inventoryRepository.findByIdWithProductAndWarehouse(id).orElse(null);
     }
 
     public Inventory createInventory(CreateInventoryRequest inventory) {

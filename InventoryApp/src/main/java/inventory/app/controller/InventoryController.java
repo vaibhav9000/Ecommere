@@ -17,8 +17,8 @@ public class InventoryController {
     private final InventoryService inventoryService;
 
     @GetMapping
-    public List<Inventory> getAllInventory() {
-        return inventoryService.getAllInventory();
+    public List<Inventory> getAllInventory(@RequestParam(value = "warehouseIds", required = false) List<UUID> warehouseIds) {
+        return inventoryService.getAllInventory(warehouseIds);
     }
 
     @GetMapping("/{id}")
