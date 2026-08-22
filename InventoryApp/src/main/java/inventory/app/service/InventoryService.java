@@ -42,4 +42,21 @@ public class InventoryService {
         return inventoryRepository.save(newInventory);
     }
 
+    public Inventory updateInventory(UUID id, CreateInventoryRequest inventory) {
+        Inventory existingInventory = inventoryRepository.findById(id).orElse(null);
+        if (existingInventory == null) {
+            return null;
+        }
+
+        if (inventory.getQuantity() != null) {
+            existingInventory.setQuantity(inventory.getQuantity());
+        }
+
+        if (inventory.getReservedQuantity() != null) {
+            existingInventory.setReservedQuantity(inventory.getReservedQuantity());
+        }
+
+        return inventoryRepository.save(existingInventory);
+    }
+
 }

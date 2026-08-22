@@ -10,6 +10,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 public class CreateInventoryRequest {
+    private UUID id;
     private UUID warehouseId;
     private UUID productId;
     private Integer quantity;
