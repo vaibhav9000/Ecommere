@@ -1,6 +1,7 @@
 package inventory.app.service;
 
 import inventory.app.enums.CreateInventoryRequest;
+import inventory.app.exception.ResourceNotFoundException;
 import inventory.app.model.Inventory;
 import inventory.app.model.Product;
 import inventory.app.model.Warehouse;
@@ -28,7 +29,7 @@ public class InventoryService {
     }
 
     public Inventory getInventory(UUID id) {
-        return inventoryRepository.findByIdWithProductAndWarehouse(id).orElse(null);
+        return inventoryRepository.findByIdWithProductAndWarehouse(id).orElseThrow(() -> new ResourceNotFoundException("Inventory", id));
     }
 
     public Inventory createInventory(CreateInventoryRequest inventory) {
@@ -45,7 +46,7 @@ public class InventoryService {
     public Inventory updateInventory(UUID id, CreateInventoryRequest inventory) {
         Inventory existingInventory = inventoryRepository.findById(id).orElse(null);
         if (existingInventory == null) {
-            return null;
+            throw new ResourceNotFoundException("Inventory", id);
         }
 
         if (inventory.getQuantity() != null) {

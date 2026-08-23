@@ -1,5 +1,6 @@
 package inventory.app.service;
 
+import inventory.app.exception.ResourceNotFoundException;
 import inventory.app.model.Warehouse;
 import inventory.app.repository.WarehouseRepository;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ public class WarehouseService {
     }
 
     public Warehouse getWarehouse(UUID id) {
-        return warehouseRepository.findById(id).orElse(null);
+        return warehouseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Warehouse", id));
     }
 
     public Warehouse getNearestWarehouse(BigDecimal latitude, BigDecimal longitude) {
@@ -39,7 +40,9 @@ public class WarehouseService {
                 nearestWarehouse = warehouse;
             }
         }
-
+        if (nearestWarehouse == null) {
+            throw new ResourceNotFoundException("Warehouse", null);
+        }
         return nearestWarehouse;
     }
 

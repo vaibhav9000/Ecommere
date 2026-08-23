@@ -1,5 +1,6 @@
 package inventory.app.service;
 
+import inventory.app.exception.ResourceNotFoundException;
 import inventory.app.model.Product;
 import inventory.app.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ public class ProductService {
     }
 
     public Product getProduct(UUID id) {
-        return productRepository.findById(id).orElse(null);
+        return productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product", id));
     }
 
     public List<Product> getProducts(String sqlQuery) {
@@ -33,7 +34,7 @@ public class ProductService {
 
     public Product updateProduct(UUID id, Product product) {
         if (!productRepository.existsById(id)) {
-            return null;
+            throw new ResourceNotFoundException("Product", id);
         }
         product.setId(id);
         return productRepository.save(product);
@@ -41,7 +42,7 @@ public class ProductService {
 
     public boolean deleteProduct(UUID id) {
         if (!productRepository.existsById(id)) {
-            return false;
+            throw new ResourceNotFoundException("Product", id);
         }
         productRepository.deleteById(id);
         return true;
