@@ -4,6 +4,7 @@ import inventory.app.exception.ResourceNotFoundException;
 import inventory.app.model.Warehouse;
 import inventory.app.repository.WarehouseRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -12,23 +13,36 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class WarehouseService {
 
     private final WarehouseRepository warehouseRepository;
 
     public Warehouse addWarehouse(Warehouse warehouse) {
+        log.debug("Adding warehouse: {}", warehouse);
         return warehouseRepository.save(warehouse);
     }
 
     public List<Warehouse> getAllWarehouses() {
+        log.info("Fetching all warehouses");
         return warehouseRepository.findAll();
     }
 
     public Warehouse getWarehouse(UUID id) {
-        return warehouseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Warehouse", id));
+        log.debug("Fetching warehouse with id: {}", id);
+        return warehouseRepository.findById(id)
+            .map(warehouse -> {
+                log.debug("Warehouse found with id: {}", id);
+                return warehouse;
+            })
+            .orElseThrow(() -> {
+                log.warn("Warehouse not found with id: {}", id);
+                return new ResourceNotFoundException("Warehouse", id);
+            });
     }
 
     public Warehouse getNearestWarehouse(BigDecimal latitude, BigDecimal longitude) {
+        log.debug("Fetching nearest warehouses for latitude: {}, longitude: {}", latitude, longitude);
         List<Warehouse> warehouses = warehouseRepository.findAll();
         Warehouse nearestWarehouse = null;
         double minDistance = 50;
@@ -41,8 +55,10 @@ public class WarehouseService {
             }
         }
         if (nearestWarehouse == null) {
+            log.warn("Nearest warehouse withing distance: {} not found", minDistance);
             throw new ResourceNotFoundException("Warehouse", null);
         }
+        log.debug("Nearest warehouse found");
         return nearestWarehouse;
     }
 
