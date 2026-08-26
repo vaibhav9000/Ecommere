@@ -1,5 +1,6 @@
 package inventory.app.service;
 
+import com.turkraft.springfilter.boot.Filter;
 import inventory.app.enums.CreateInventoryRequest;
 import inventory.app.exception.ResourceNotFoundException;
 import inventory.app.model.Inventory;
@@ -7,25 +8,38 @@ import inventory.app.model.Product;
 import inventory.app.model.Warehouse;
 import inventory.app.repository.InventoryRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class InventoryService {
+public class InventoryService{
+
+//    protected Set<String> allowedFitlerFields() {
+//        return Set.of("id", "quantity", "reservedQuantity");
+//    }
+//
+//    protected Set<String> allowedSortFields() {
+//        return Set.of("quantity", "reservedQuantity", "updatedAt");
+//    }
 
     private final InventoryRepository inventoryRepository;
     private final WarehouseService warehouseService;
     private final ProductService productService;
 
-    public List<Inventory> getAllInventory(List<UUID> warehouseIds) {
-        if (warehouseIds == null || warehouseIds.isEmpty()) {
-            return inventoryRepository.findAllWithProductAndWarehouse();
-        }
-        List<Inventory> inventoryList = inventoryRepository.findAllByWarehouseIds(warehouseIds);
-        return inventoryList;
+    public Page<Inventory> getALlInventory(Specification<Inventory> filter, Pageable pageable, List<UUID> warehouseIds) {
+//        if (warehouseIds == null || warehouseIds.isEmpty()) {
+//            return inventoryRepository.findAllWithProductAndWarehouse(filter, pageable);
+//        }
+//        List<Inventory> inventoryList = inventoryRepository.findAllByWarehouseIds(warehouseIds);
+//        return inventoryList;
+        return inventoryRepository.findAll(pageable);
     }
 
     public Inventory getInventory(UUID id) {
