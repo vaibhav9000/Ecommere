@@ -1,7 +1,6 @@
 package inventory.app.service;
 
-import com.turkraft.springfilter.boot.Filter;
-import inventory.app.enums.InventoryRequest;
+import inventory.app.request.InventoryRequest;
 import inventory.app.exception.ResourceNotFoundException;
 import inventory.app.model.Inventory;
 import inventory.app.model.Product;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Service

@@ -1,5 +1,6 @@
 package inventory.app.model;
 
+import inventory.app.enums.ProductCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,14 +11,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.util.UUID;
-
-enum ProductCategories {
-    ELECTRONICS,
-    CLOTHING,
-    FOOD,
-    FURNITURE,
-    TOYS
-}
 
 @Entity
 @Table(name = "products")
@@ -36,7 +29,7 @@ public class Product {
     private String description;
 
     @Column(nullable = false)
-    private ProductCategories category;
+    private ProductCategory category;
 
     private String imageUrl;
 

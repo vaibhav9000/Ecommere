@@ -1,6 +1,9 @@
 package inventory.app.service;
 
 import inventory.app.enums.*;
+import inventory.app.request.OrderItemRequest;
+import inventory.app.request.OrderRequest;
+import inventory.app.request.TransactionRequest;
 import inventory.app.exception.InsufficientStockException;
 import inventory.app.exception.OrderNotFoundException;
 import inventory.app.model.Inventory;
@@ -36,13 +39,14 @@ public class OrderService {
         orderRepository.flush();
 
         UUID orderId = order.getId();
-        List<OrderItem> items = request.getItems().stream().map(orderItem -> createOrderItem(orderItem, orderId)).toList();
+        List<OrderItem> items = request.getItems().stream()
+            .map(orderItem -> createOrderItem(orderItem, orderId, request.getUserId())).toList();
         double totalAmount = items.stream().mapToDouble(OrderItem::getTotalPrice).sum();
         order.setTotal_amount(totalAmount);
         return orderRepository.save(order);
     }
 
-    private OrderItem createOrderItem(OrderItemRequest request, UUID orderId) {
+    private OrderItem createOrderItem(OrderItemRequest request, UUID orderId, UUID userId) {
         // check for sufficient capacity and update
         int updated = inventoryService.decrementQuantityIfAvailable(request.getInventoryId(), request.getQuantity());
         if (updated == 0) {
@@ -50,7 +54,7 @@ public class OrderService {
         }
         // add transaction
         TransactionRequest transactionRequest = new TransactionRequest(
-                request.getInventoryId(), orderId, request.getUserId(),
+                request.getInventoryId(), orderId, userId,
                 -request.getQuantity(), TransactionType.BUY, "");
         transactionService.addTransaction(transactionRequest);
         // save item

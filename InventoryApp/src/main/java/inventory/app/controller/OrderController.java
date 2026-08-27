@@ -1,6 +1,6 @@
 package inventory.app.controller;
 
-import inventory.app.enums.OrderRequest;
+import inventory.app.request.OrderRequest;
 import inventory.app.model.Order;
 import inventory.app.service.OrderService;
 import lombok.AllArgsConstructor;

@@ -1,5 +1,6 @@
-package inventory.app.enums;
+package inventory.app.request;
 
+import inventory.app.enums.TransactionType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

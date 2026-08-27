@@ -1,4 +1,4 @@
-package inventory.app.enums;
+package inventory.app.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +11,5 @@ import java.util.UUID;
 @AllArgsConstructor
 public class OrderItemRequest {
     private UUID inventoryId;
-    private UUID userId;
     private int quantity;
 }

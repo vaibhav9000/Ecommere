@@ -1,4 +1,4 @@
-package inventory.app.enums;
+package inventory.app.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

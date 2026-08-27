@@ -1,10 +1,8 @@
 package inventory.app.service;
 
-import inventory.app.enums.TransactionRequest;
+import inventory.app.request.TransactionRequest;
 import inventory.app.exception.ResourceNotFoundException;
-import inventory.app.model.Product;
 import inventory.app.model.Transaction;
-import inventory.app.model.Warehouse;
 import inventory.app.repository.TransactionRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
