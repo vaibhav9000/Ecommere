@@ -1,5 +1,6 @@
 package inventory.app.model;
 
+import inventory.app.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,16 +11,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
 import java.util.UUID;
-
-enum OrderStatus {
-    PENDING,
-    CONFIRMED,
-    SHIPPED,
-    IN_TRANSIT,
-    DELIVERED,
-    REJECTED,
-    CANCELLED,
-}
 
 @Entity
 @Table(name="orders")

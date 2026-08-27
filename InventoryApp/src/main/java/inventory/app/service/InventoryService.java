@@ -1,7 +1,7 @@
 package inventory.app.service;
 
 import com.turkraft.springfilter.boot.Filter;
-import inventory.app.enums.CreateInventoryRequest;
+import inventory.app.enums.InventoryRequest;
 import inventory.app.exception.ResourceNotFoundException;
 import inventory.app.model.Inventory;
 import inventory.app.model.Product;
@@ -46,7 +46,7 @@ public class InventoryService{
         return inventoryRepository.findByIdWithProductAndWarehouse(id).orElseThrow(() -> new ResourceNotFoundException("Inventory", id));
     }
 
-    public Inventory createInventory(CreateInventoryRequest inventory) {
+    public Inventory createInventory(InventoryRequest inventory) {
         Warehouse warehouse = warehouseService.getWarehouse(inventory.getWarehouseId());
         Product product = productService.getProduct(inventory.getProductId());
         Inventory newInventory = new Inventory();
@@ -57,7 +57,7 @@ public class InventoryService{
         return inventoryRepository.save(newInventory);
     }
 
-    public Inventory updateInventory(UUID id, CreateInventoryRequest inventory) {
+    public Inventory updateInventory(UUID id, InventoryRequest inventory) {
         Inventory existingInventory = inventoryRepository.findById(id).orElse(null);
         if (existingInventory == null) {
             throw new ResourceNotFoundException("Inventory", id);
@@ -72,6 +72,10 @@ public class InventoryService{
         }
 
         return inventoryRepository.save(existingInventory);
+    }
+
+    public int decrementQuantityIfAvailable(UUID id, int qty) {
+        return inventoryRepository.decrementQuantityIfAvailable(id, qty);
     }
 
 }

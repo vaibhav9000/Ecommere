@@ -1,7 +1,7 @@
 package inventory.app.controller;
 
 import com.turkraft.springfilter.boot.Filter;
-import inventory.app.enums.CreateInventoryRequest;
+import inventory.app.enums.InventoryRequest;
 import inventory.app.model.Inventory;
 import inventory.app.service.InventoryService;
 import lombok.AllArgsConstructor;
@@ -39,12 +39,12 @@ public class InventoryController {
 
     @PostMapping
     @PreAuthorize("hasRole('SERVICE_USER')")
-    public Inventory createInventory(@RequestBody CreateInventoryRequest inventory) {
+    public Inventory createInventory(@RequestBody InventoryRequest inventory) {
         return inventoryService.createInventory(inventory);
     }
 
     @PatchMapping("/{id}")
-    public Inventory updateInventory(@PathVariable UUID id, @RequestBody CreateInventoryRequest inventory) {
+    public Inventory updateInventory(@PathVariable UUID id, @RequestBody InventoryRequest inventory) {
         return inventoryService.updateInventory(id, inventory);
     }
 }
