@@ -26,10 +26,8 @@ public class Transaction {
     @Column(nullable = false)
     private UUID inventoryId;
 
-    @Column(nullable = false)
     private UUID orderId;
 
-    @Column(nullable = false)
     private UUID userId;
 
     @Column(nullable = false)

@@ -2,6 +2,9 @@ package inventory.app.enums;
 
 public enum TransactionType {
     BUY,
+    CANCEL,
     RETURN,
-    UPDATE
+    ADD,
+    UPDATE,
+    DELETE
 }

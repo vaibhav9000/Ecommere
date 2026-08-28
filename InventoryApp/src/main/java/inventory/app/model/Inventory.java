@@ -11,7 +11,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "inventory")
+@Table(name = "inventory", uniqueConstraints = @UniqueConstraint(columnNames = { "warehouse_id", "product_id" }))
 @Getter
 @Setter
 @NoArgsConstructor

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -69,22 +70,43 @@ public class OrderService {
         return orderItemRepository.save(orderItem);
     }
 
+    @Transactional
     public Order confirmOrder(UUID id) {
-        Order order = orderRepository.findById(id).orElseThrow(() -> {
+        Order order = orderRepository.findByIdForUpdate(id).orElseThrow(() -> {
             log.warn("Order not found for id: {}, can't confirm order", id);
-            throw new OrderNotFoundException(id);
+            return new OrderNotFoundException(id);
         });
+        if (order.getStatus() != OrderStatus.PENDING) {
+            throw new RuntimeException("Order with id: " + id.toString() + " is not in pending state");
+        }
+        // validate if payment is done (will be done in future)
         order.setStatus(OrderStatus.CONFIRMED);
         return orderRepository.save(order);
     }
 
+    @Transactional
     public Order cancelOrder(UUID id) {
-        Order order = orderRepository.findById(id).orElseThrow(() -> {
+        Order order = orderRepository.findByIdForUpdate(id).orElseThrow(() -> {
             log.warn("Order not found for id: {}, can't cancel order", id);
             throw new OrderNotFoundException(id);
         });
+        if (Set.of(OrderStatus.CANCELLED, OrderStatus.REJECTED, OrderStatus.DELIVERED).contains(order.getStatus())) {
+            throw new RuntimeException("Order can't be cancelled");
+        }
         order.setStatus(OrderStatus.CANCELLED);
+        // read order items
+        List<OrderItem> items = orderItemRepository.findItemsByOrderId(id);
+        items.stream().forEach(item -> cancelOrderItem(item, id, order.getUserId()));
         return orderRepository.save(order);
+    }
+
+    private void cancelOrderItem(OrderItem item, UUID orderId, UUID userId) {
+        // inventory update
+        UUID inventoryId = item.getInventoryId();
+        inventoryService.incrementQuantityIfAvailable(inventoryId, item.getQuantity());
+        // create new transactions
+        TransactionRequest transaction = new TransactionRequest(inventoryId, orderId, userId, item.getQuantity(), TransactionType.CANCEL, "");
+        transactionService.addTransaction(transaction);
     }
 
 }

@@ -17,17 +17,17 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    @PostMapping("/pending")
+    @PostMapping
     public Order createOrder(@RequestBody OrderRequest orderRequest) {
         return orderService.createOrder(orderRequest);
     }
 
-    @PutMapping("/confirm/{id}")
+    @PutMapping("/{id}/confirm")
     public Order confirmOrder(@PathVariable UUID id) {
         return orderService.confirmOrder(id);
     }
 
-    @PutMapping("cancel/{id}")
+    @PutMapping("/{id}/cancel")
     public Order cancelOrder(@PathVariable UUID id) {
         return orderService.cancelOrder(id);
     }

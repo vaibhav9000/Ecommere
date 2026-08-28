@@ -15,6 +15,6 @@ public class InventoryRequest {
     private UUID id;
     private UUID warehouseId;
     private UUID productId;
-    private Integer quantity;
-    private Integer reservedQuantity;
+    private Integer quantity = 0;
+    private Integer reservedQuantity = 0;
 }

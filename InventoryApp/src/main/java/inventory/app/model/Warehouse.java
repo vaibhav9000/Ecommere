@@ -1,5 +1,6 @@
 package inventory.app.model;
 
+import inventory.app.enums.WarehouseStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,11 +9,6 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.UUID;
-
-enum WarehouseStatus {
-    ACTIVE,
-    INACTIVE
-}
 
 @Entity
 @Table(name = "warehouses")
