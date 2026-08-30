@@ -12,7 +12,12 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name="order_items")
+@Table(
+        name="order_items",
+        indexes = {
+                @Index(name = "idx_order_item_order_id", columnList = "order_id")
+        }
+)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,6 +33,10 @@ public class OrderItem {
 
     @Column(nullable = false)
     private UUID inventoryId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
 
     @Column(nullable = false)
     private int quantity = 0;

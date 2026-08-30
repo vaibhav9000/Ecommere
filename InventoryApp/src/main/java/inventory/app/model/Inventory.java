@@ -11,7 +11,14 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "inventory", uniqueConstraints = @UniqueConstraint(columnNames = { "warehouse_id", "product_id" }))
+@Table(
+        name = "inventory",
+        uniqueConstraints = @UniqueConstraint(name = "idx_inventory_unique", columnNames = { "warehouse_id", "product_id" }),
+        indexes = {
+                @Index(name = "idx_inventory_product_id", columnList = "product_id"),
+                @Index(name = "idx_inventory_warehouse_id", columnList = "warehouse_id")
+        }
+)
 @Getter
 @Setter
 @NoArgsConstructor

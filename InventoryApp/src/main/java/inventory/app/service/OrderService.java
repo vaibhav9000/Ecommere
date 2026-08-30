@@ -1,6 +1,7 @@
 package inventory.app.service;
 
 import inventory.app.enums.*;
+import inventory.app.model.Product;
 import inventory.app.request.OrderItemRequest;
 import inventory.app.request.OrderRequest;
 import inventory.app.request.TransactionRequest;
@@ -63,10 +64,15 @@ public class OrderService {
         orderItem.setOrderId(orderId);
         orderItem.setInventoryId(request.getInventoryId());
         orderItem.setQuantity(request.getQuantity());
+
         Inventory inventory = inventoryService.getInventory(request.getInventoryId());
         double unitPrice = inventory.getProduct().getPrice();
         orderItem.setUnitPrice(unitPrice);
         orderItem.setTotalPrice(unitPrice * request.getQuantity());
+
+        Product product = inventory.getProduct();
+        orderItem.setProduct(product);
+
         return orderItemRepository.save(orderItem);
     }
 
@@ -107,6 +113,10 @@ public class OrderService {
         // create new transactions
         TransactionRequest transaction = new TransactionRequest(inventoryId, orderId, userId, item.getQuantity(), TransactionType.CANCEL, "");
         transactionService.addTransaction(transaction);
+    }
+
+    public List<Order> getOrders() {
+        return orderRepository.findAllOrders();
     }
 
 }

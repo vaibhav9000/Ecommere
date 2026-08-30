@@ -10,10 +10,19 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name="orders")
+@Table(
+        name="orders",
+        indexes = {
+                @Index(name = "idx_order_user_id", columnList = "user_id"),
+                @Index(name = "idx_order_created_at", columnList = "created_at"),
+                @Index(name = "idx_order_status", columnList = "status")
+        }
+)
 @Setter
 @Getter
 @NoArgsConstructor

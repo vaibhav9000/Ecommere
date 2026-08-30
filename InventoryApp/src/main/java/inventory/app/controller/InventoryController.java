@@ -44,6 +44,7 @@ public class InventoryController {
     }
 
     @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('SERVICE_USER')")
     public Inventory updateInventory(@PathVariable UUID id, @RequestBody InventoryRequest inventory) {
         return inventoryService.updateInventory(id, inventory);
     }
